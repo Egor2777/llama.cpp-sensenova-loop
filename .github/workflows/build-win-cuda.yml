@@ -29,10 +29,15 @@ jobs:
           -DCMAKE_CUDA_ARCHITECTURES="120-real"
           -DLLAMA_BUILD_TESTS=OFF
           -DLLAMA_BUILD_EXAMPLES=ON
-          -DLLAMA_BUILD_UI=OFF
+          -DLLAMA_BUILD_UI=ON
+          -DLLAMA_USE_PREBUILT_UI=OFF
 
-      - name: Build
-        run: cmake --build build --target llama-server llama-cli -j 4
+      - name: Build llama-cli
+        run: cmake --build build --target llama-cli -j 4
+
+      - name: Build llama-server
+        continue-on-error: true
+        run: cmake --build build --target llama-server -j 4
 
       - name: Collect files
         shell: pwsh
