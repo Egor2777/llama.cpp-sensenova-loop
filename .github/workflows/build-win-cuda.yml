@@ -39,6 +39,8 @@ jobs:
             -DGGML_CUDA=ON `
             -DCMAKE_CUDA_ARCHITECTURES="120" `
             -DLLAMA_CURL=OFF `
+            -DLLAMA_BUILD_SERVER_UI=OFF `
+            -DLLAMA_WEBUI=OFF `
             -DCMAKE_BUILD_TYPE=Release
 
       - name: Build binaries
@@ -49,6 +51,9 @@ jobs:
       - name: Package artifacts
         shell: pwsh
         run: |
+          if (-not (Test-Path "build\bin\llama-server.exe")) {
+            throw "llama-server.exe was not built"
+          }
           New-Item -ItemType Directory -Force -Path dist | Out-Null
           Copy-Item build\bin\*.exe -Destination dist\ -ErrorAction SilentlyContinue
           Copy-Item build\bin\*.dll -Destination dist\ -ErrorAction SilentlyContinue
