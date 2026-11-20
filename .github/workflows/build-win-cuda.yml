@@ -16,7 +16,6 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-
 - name: Install CUDA Toolkit
         shell: pwsh
         run: |
